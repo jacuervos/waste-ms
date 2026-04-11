@@ -1,13 +1,22 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TypeWasteController;
 use App\Http\Controllers\OrderTypeWasteController;
 
-Route::prefix('typeWaste')->group(function () {
-    Route::middleware(['auth:api'])->group(function () {
-        Route::apiResource('type-wastes', TypeWasteController::class);
-        Route::patch('type-wastes/{typeWaste}/toggle-status', [TypeWasteController::class, 'toggleStatus']);
-        Route::apiResource('order-type-wastes', OrderTypeWasteController::class);
+Route::middleware('auth.jwt')->group(function () {
+
+    // TypeWaste — solo accesible por el rol Administrador
+    Route::middleware('role:Administrador')->group(function () {
+        Route::post('type-wastes', '\App\Http\Controllers\TypeWasteStoreController@create')->name('typeWaste.create');
+        Route::put('type-wastes/{typeWaste}', '\App\Http\Controllers\TypeWasteUpdateController@update')->name('typeWaste.update');
+        Route::patch('type-wastes/{typeWaste}/toggle-status', '\App\Http\Controllers\TypeWasteChangeStateController@toggleStatus')->name('typeWaste.toggleStatus');
+        Route::delete('type-wastes/{typeWaste}', '\App\Http\Controllers\TypeWasteDeleteController@delete')->name('typeWaste.delete');
     });
+
+    // TypeWaste — accesible por cualquier usuario autenticado
+    Route::get('type-wastes', '\App\Http\Controllers\TypeWasteIndexController@index')->name('typeWaste.index');
+
+    // OrderTypeWaste
+    Route::apiResource('order-type-wastes', OrderTypeWasteController::class);
 });
+
