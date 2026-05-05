@@ -13,4 +13,10 @@ class TypeWasteIndexController extends Controller
 
         return TypeWasteResource::collection($typeWastes);
     }
+
+    public function active()
+    {
+        $typeWastes = TypeWaste::where('is_active', true)->orderBy('id', 'DESC')->get();
+        return TypeWasteResource::collection($typeWastes);
+    }
 }

@@ -15,6 +15,7 @@ Route::middleware('auth.jwt')->group(function () {
 
     // TypeWaste — accesible por cualquier usuario autenticado
     Route::get('type-wastes', '\App\Http\Controllers\TypeWasteIndexController@index')->name('typeWaste.index');
+    Route::get('type-wastes/active', '\App\Http\Controllers\TypeWasteIndexController@active')->name('typeWaste.active');
 
     // OrderTypeWaste
     Route::apiResource('order-type-wastes', OrderTypeWasteController::class);
