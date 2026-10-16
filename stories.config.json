@@ -1,0 +1,12 @@
+{
+  "backendStories": [
+    {
+      "id": "hu-15-creacion-de-tipos-de-residuo",
+      "sprint": 2,
+      "title": "HU-15 Creación de tipos de residuo",
+      "filter": "Tests\\\\Feature\\\\TypeWaste\\\\TypeWasteManagementTest",
+      "enabled": true
+    }
+  ]
+}
+
