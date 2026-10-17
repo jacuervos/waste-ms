@@ -5,13 +5,10 @@ namespace Tests\Feature\TypeWaste;
 use App\Http\Middleware\AuthenticateJwt;
 use App\Http\Middleware\CheckRole;
 use App\Models\TypeWaste;
-use Tests\Feature\Support\CreatesWasteMsSchema;
 use Tests\TestCase;
 
 class TypeWasteManagementTest extends TestCase
 {
-    use CreatesWasteMsSchema;
-
     protected function setUp(): void
     {
         parent::setUp();
