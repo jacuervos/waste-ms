@@ -135,5 +135,40 @@ class TypeWasteManagementTest extends TestCase
             'id' => $typeWaste->id,
         ]);
     }
+
+    public function test_create_and_update_handle_exceptions_and_rollback(): void
+    {
+        $typeWaste = TypeWaste::create([
+            'name' => 'Tetrapak',
+            'points' => 18,
+            'is_active' => true,
+        ]);
+
+        TypeWaste::creating(function () {
+            throw new \RuntimeException('Simulated create error');
+        });
+
+        $createErrorResponse = $this->postJson('/api/type-wastes', [
+            'name' => 'Residuo Fallido',
+            'points' => 10,
+        ]);
+        $createErrorResponse->assertStatus(400)
+            ->assertJsonPath('code', 400);
+
+        TypeWaste::flushEventListeners();
+
+        TypeWaste::updating(function () {
+            throw new \RuntimeException('Simulated update error');
+        });
+
+        $updateErrorResponse = $this->putJson("/api/type-wastes/{$typeWaste->id}", [
+            'name' => 'Tetrapak Actualizado',
+            'points' => 22,
+        ]);
+        $updateErrorResponse->assertStatus(400)
+            ->assertJsonPath('code', 400);
+
+        TypeWaste::flushEventListeners();
+    }
 }
 
